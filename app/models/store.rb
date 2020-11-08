@@ -11,4 +11,8 @@ class Store < ApplicationRecord
     )
   }
 
+  def ratings_average
+    self.ratings.average(:value) || 0
+  end
+
 end
