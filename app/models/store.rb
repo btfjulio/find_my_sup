@@ -3,10 +3,12 @@ class Store < ApplicationRecord
   validates_presence_of :lonlat, :name, :google_place_id
   validates :google_place_id, uniqueness: true
 
-  scope :within, ~> (longitude, latitude, distance_in_km = 5) {
+  scope :within, -> (longitude, latitude, distance_in_km = 5) {
     where(
-      %{ ST_distance(lonlat, 'POINT(%f %f)' < %d } 
-      % [longitude, latitude, distance_in_km * 1000]
+      %{ 
+        ST_distance(lonlat, 'POINT(%f %f)') < %d
+      } % [longitude, latitude, distance_in_km * 1000]
     )
   }
+
 end
